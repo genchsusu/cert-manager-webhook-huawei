@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  acme:
+    email: {{ .Values.email }}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: {{ .Release.Name }}
+    solvers:
+      - dns01:
+          webhook:
+            config:
+              appKey: {{ .Values.appKey | quote }}
+              appSecret: {{ .Values.appSecret | quote }}
+              region: {{ .Values.region | quote }}
+              zoneId: {{ .Values.zoneId | quote }}
+            groupName: {{ .Values.groupName }}
+            solverName: huawei-dns
